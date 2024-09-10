@@ -85,7 +85,8 @@ JOIN total_revenue_cte tr ON 1 = 1
 GROUP BY pt.name
 ORDER BY Total_per_revenue DESC;
 
--- Calculate daily revenue using CTE
+--  Calculate cumulative revenue --
+          -- Calculate daily revenue using CTE --
 WITH RevenuePerDate AS (SELECT o.date, 
         ROUND(SUM(quantity * price), 2) AS Revenue
     FROM orders o
@@ -93,7 +94,7 @@ WITH RevenuePerDate AS (SELECT o.date,
     JOIN pizzas p ON od.pizza_id = p.pizza_id
     GROUP BY o.date
 )
--- Calculate cumulative revenue
+        -- Cumulative revenue --
 SELECT date,Revenue,
     ROUND(SUM(Revenue) OVER (ORDER BY date), 2) AS Cumulative_Revenue
 FROM RevenuePerDate
