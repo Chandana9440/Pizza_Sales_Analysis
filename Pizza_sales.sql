@@ -1,4 +1,4 @@
--- Retrieve the total number of orders placed --
+-- To retrieve the total number of orders placed --
 SELECT count(order_id) AS Total_Orders
 FROM orders;
 				-- OR --
