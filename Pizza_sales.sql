@@ -77,13 +77,14 @@ WITH total_revenue_cte AS (
     JOIN pizzas p ON od.pizza_id = p.pizza_id
 )
 SELECT pt.name, 
-       (SUM(od.quantity * p.price) / tr.total_revenue) * 100 AS Total_per_revenue
+       ROUND((SUM(od.quantity * p.price) / tr.total_revenue) * 100, 2) AS total_per_revenue
 FROM order_details od
 JOIN pizzas p ON od.pizza_id = p.pizza_id
 JOIN pizza_types pt ON p.pizza_type_id = pt.pizza_type_id
-JOIN total_revenue_cte tr ON 1 = 1
-GROUP BY pt.name
-ORDER BY Total_per_revenue DESC;
+CROSS JOIN total_revenue_cte tr
+GROUP BY pt.name, tr.total_revenue
+ORDER BY total_per_revenue DESC;
+
 
 -- Calculate daily revenue using CTE
 WITH RevenuePerDate AS (SELECT o.date, 
